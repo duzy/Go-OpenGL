@@ -12,6 +12,8 @@ package glu
 import "C"
 import "gl"
 
+type GLUquadric C.GLUquadric
+
 func Build2DMipmaps(target gl.GLenum, internalFormat int, width, height int, format gl.GLenum, data interface{}) int {
 	t, p := gl.GetGLenumType(data)
 	return int(C.gluBuild2DMipmaps(
@@ -86,4 +88,48 @@ func PickMatrix(x, y, delx, dely float64, viewport []int32) {
 
 func Ortho2D(left, right, bottom, top float64) {
 	C.gluOrtho2D(C.GLdouble(left), C.GLdouble(right), C.GLdouble(bottom), C.GLdouble(top))
+}
+
+func NewQuadric() (quad *GLUquadric) {
+        quad = (*GLUquadric)(C.gluNewQuadric())
+        return
+}
+
+func (quad *GLUquadric) Delete() {
+        C.gluDeleteQuadric((*C.GLUquadric)(quad))
+}
+
+//func (quad *GLUquadric) QuadricCallback(which GLenum, CallBackFunc _GLUfuncptr) {
+//}
+
+func (quad *GLUquadric) QuadricDrawStyle(draw gl.GLenum) {
+        C.gluQuadricDrawStyle((*C.GLUquadric)(quad), C.GLenum(draw))
+}
+
+func (quad *GLUquadric) QuadricNormals(normal gl.GLenum) {
+        C.gluQuadricNormals((*C.GLUquadric)(quad), C.GLenum(normal))
+}
+
+func (quad *GLUquadric) QuadricOrientation(orientation gl.GLenum) {
+        C.gluQuadricOrientation((*C.GLUquadric)(quad), C.GLenum(orientation))
+}
+
+func (quad *GLUquadric) QuadricTexture(texture gl.GLboolean) {
+        C.gluQuadricTexture((*C.GLUquadric)(quad), C.GLboolean(texture))
+}
+
+func (quad *GLUquadric) Cylinder(base, top, height gl.GLdouble, slices, stacks gl.GLint) {
+        C.gluCylinder((*C.GLUquadric)(quad), C.GLdouble(base), C.GLdouble(top), C.GLdouble(height), C.GLint(slices), C.GLint(stacks))
+}
+
+func (quad *GLUquadric) Disk(inner, outer gl.GLdouble, slices, loops gl.GLint) {
+        C.gluDisk((*C.GLUquadric)(quad), C.GLdouble(inner), C.GLdouble(outer), C.GLint(slices), C.GLint(loops))
+}
+
+func (quad *GLUquadric) PartialDisk(inner, outer gl.GLdouble, slices, loops gl.GLint, start, sweep gl.GLdouble) {
+        C.gluPartialDisk((*C.GLUquadric)(quad), C.GLdouble(inner), C.GLdouble(outer), C.GLint(slices), C.GLint(loops), C.GLdouble(start), C.GLdouble(sweep))
+}
+
+func (quad *GLUquadric) Sphere(radius gl.GLdouble, slices, stacks gl.GLint) {
+        C.gluSphere((*C.GLUquadric)(quad), C.GLdouble(radius), C.GLint(slices), C.GLint(stacks))
 }

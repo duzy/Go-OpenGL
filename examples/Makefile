@@ -4,7 +4,8 @@
 
 include $(GOROOT)/src/Make.inc
 
-TARGETS=draw gomandel sdlgears glfwgears
+#TARGETS=draw gomandel sdlgears glfwgears
+TARGETS=glfwgears
 
 .PHONY: all clean
 
